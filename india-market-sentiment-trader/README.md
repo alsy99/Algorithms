@@ -74,6 +74,23 @@ Mock quotes / Angel WS → Quote cache → Signal Engine → Risk Manager → Br
 docker compose up --build
 ```
 
+## Dashboard (GitHub Pages)
+
+A static demo dashboard is in `docs/` and deploys automatically via GitHub Actions.
+
+**URL:** https://alsy99.github.io/Algorithms/
+
+> Enable **GitHub Pages** in repo Settings → Pages → Source: **GitHub Actions** (first-time setup).
+
+The Pages site runs a **client-side demo** (simulated quotes/sentiment). For the **live bot UI**, run locally:
+
+```bash
+sentiment-trader
+# open http://localhost:8080/
+```
+
+Live JSON API: `http://localhost:8080/api/status`
+
 ## Switching brokers later
 
 Implement `KiteBroker` in `src/sentiment_trader/execution/brokers/kite.py` and set:

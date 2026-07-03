@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>India Market Sentiment Trader</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div>
+      <h1>India Market Sentiment Trader</h1>
+      <p class="subtitle">NSE/BSE real-time sentiment analyzer · Angel One SmartAPI · IST</p>
+    </div>
+    <div class="status-pill" id="bot-status">Connecting…</div>
+  </header>
+
+  <section class="cards">
+    <article class="card">
+      <h2>Portfolio</h2>
+      <p class="metric" id="equity">—</p>
+      <p class="label">Equity (INR)</p>
+    </article>
+    <article class="card">
+      <h2>News processed</h2>
+      <p class="metric" id="news-count">—</p>
+      <p class="label">Headlines scored</p>
+    </article>
+    <article class="card">
+      <h2>Positions</h2>
+      <p class="metric" id="positions">—</p>
+      <p class="label">Open positions</p>
+    </article>
+    <article class="card">
+      <h2>Market</h2>
+      <p class="metric" id="market-state">—</p>
+      <p class="label" id="market-time">IST</p>
+    </article>
+  </section>
+
+  <section class="panel">
+    <h2>Watchlist sentiment &amp; prices</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Symbol</th>
+          <th>LTP (INR)</th>
+          <th>Sentiment</th>
+          <th>Momentum</th>
+          <th>Signal</th>
+        </tr>
+      </thead>
+      <tbody id="watchlist-body"></tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2>Activity log</h2>
+    <ul id="activity-log" class="log"></ul>
+  </section>
+
+  <footer>
+    <p id="mode-label">Mode: demo</p>
+    <p>Educational software — not financial advice.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

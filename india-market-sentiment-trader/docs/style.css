@@ -1,0 +1,97 @@
+:root {
+  --bg: #0b1220;
+  --panel: #121a2b;
+  --text: #e8eefc;
+  --muted: #93a4c7;
+  --accent: #3ddc97;
+  --warn: #ffb020;
+  --danger: #ff6b6b;
+  --border: #24304a;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+  background: linear-gradient(180deg, #0a1020 0%, #0f172a 100%);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 1.5rem;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+h1 { margin: 0 0 0.25rem; font-size: 1.6rem; }
+.subtitle { margin: 0; color: var(--muted); font-size: 0.95rem; }
+
+.status-pill {
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  background: #1f2a44;
+  border: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+.status-pill.ok { color: var(--accent); border-color: #2f6e57; }
+.status-pill.demo { color: var(--warn); border-color: #6a5220; }
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.card, .panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+}
+
+.card h2, .panel h2 {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.metric { margin: 0; font-size: 1.5rem; font-weight: 700; }
+.label { margin: 0.2rem 0 0; color: var(--muted); font-size: 0.8rem; }
+
+.panel { margin-bottom: 1.5rem; overflow-x: auto; }
+
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 0.65rem 0.4rem; border-bottom: 1px solid var(--border); }
+th { color: var(--muted); font-size: 0.8rem; }
+
+.sentiment-pos { color: var(--accent); }
+.sentiment-neg { color: var(--danger); }
+.signal-buy { color: var(--accent); font-weight: 700; }
+.signal-sell { color: var(--danger); font-weight: 700; }
+.signal-hold { color: var(--muted); }
+
+.log {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 220px;
+  overflow-y: auto;
+}
+.log li {
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+footer {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-top: 1rem;
+}

@@ -17,6 +17,7 @@ from sentiment_trader.ingestion.news_rss import NewsRssPoller
 from sentiment_trader.ingestion.reddit_stream import RedditPoller
 from sentiment_trader.market_hours import market_is_open
 from sentiment_trader.models import Quote, SignalAction
+from sentiment_trader.monitoring.dashboard import DashboardState
 from sentiment_trader.monitoring.health import (
     EQUITY_INR,
     NEWS_PROCESSED,
@@ -54,6 +55,8 @@ class TradingBot:
         )
         self._signals = SignalEngine(self._config.signals)
         self._health = HealthServer(self._config.monitoring.health_port)
+        self._dashboard_state = DashboardState()
+        self._health.set_status_provider(self._build_status)
         self._news = NewsRssPoller(self._config.sentiment.poll_rss_seconds)
         self._reddit = RedditPoller(
             self._env, self._watchlist, self._config.sentiment.poll_reddit_seconds
@@ -62,6 +65,7 @@ class TradingBot:
         self._tasks: list[asyncio.Task] = []
         self._latest_quotes: dict[str, Quote] = {}
         self._shutdown = asyncio.Event()
+        self._news_count = 0
 
     async def start(self) -> None:
         structlog.configure(
@@ -94,6 +98,43 @@ class TradingBot:
             broker=self._config.broker.provider,
             symbols=[s.symbol for s in self._watchlist.symbols],
         )
+        self._dashboard_state.log("Bot started in mock/paper mode")
+
+    async def _build_status(self) -> dict:
+        equity = await self._portfolio.equity()
+        positions = await self._portfolio.positions()
+        watchlist_rows = []
+        for entry in self._watchlist.symbols:
+            symbol = entry.symbol
+            quote = self._latest_quotes.get(symbol)
+            agg = self._aggregator.get(symbol)
+            ltp = quote.ltp if quote else 0.0
+            sentiment = agg.score if agg else 0.0
+            momentum = 0.0
+            signal = "HOLD"
+            if quote and agg:
+                sig = self._signals.evaluate(agg, quote)
+                momentum = sig.momentum
+                signal = sig.action.value
+            watchlist_rows.append(
+                {
+                    "symbol": symbol,
+                    "ltp": ltp,
+                    "sentiment": sentiment,
+                    "momentum": momentum,
+                    "signal": signal,
+                }
+            )
+        return {
+            "status": "ok",
+            "broker": self._config.broker.provider,
+            "equity_inr": equity,
+            "news_processed": self._news_count,
+            "open_positions": len(positions),
+            "market_open": market_is_open(self._config.market),
+            "watchlist": watchlist_rows,
+            "recent_activity": list(self._dashboard_state.recent_activity),
+        }
 
     async def stop(self) -> None:
         self._shutdown.set()
@@ -130,6 +171,7 @@ class TradingBot:
             return
 
         NEWS_PROCESSED.inc()
+        self._news_count += 1
         score_value = self._scorer.score(text)
         symbols = self._linker.link(text)
         if not symbols:
@@ -156,6 +198,7 @@ class TradingBot:
                 score=round(agg.score, 4),
                 source=item.source,
             )
+            self._dashboard_state.log(f"Sentiment {symbol}: {agg.score:.3f} ({item.source})")
 
     async def _trading_loop(self) -> None:
         while not self._shutdown.is_set():
@@ -214,6 +257,9 @@ class TradingBot:
                         side=result.side.value,
                         qty=result.quantity,
                         price=result.fill_price,
+                    )
+                    self._dashboard_state.log(
+                        f"Trade {result.side.value} {result.quantity} {result.symbol} @ ₹{result.fill_price}"
                     )
                     if order.side.value == "SELL":
                         self._risk.update_after_close(symbol, await self._portfolio.equity())
