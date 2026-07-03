@@ -1,0 +1,37 @@
+broker:
+  provider: mock  # mock | angel_one | kite
+
+market:
+  exchange: NSE
+  timezone: Asia/Kolkata
+  session_open: "09:15"
+  session_close: "15:30"
+  pre_open: "09:00"
+  intraday_squareoff: "15:15"
+
+sentiment:
+  model: vader  # vader | finbert
+  aggregation_window_minutes: 15
+  decay_lambda: 0.05
+  poll_rss_seconds: 120
+  poll_reddit_seconds: 60
+
+signals:
+  buy_sentiment_threshold: 0.35
+  sell_sentiment_threshold: -0.25
+  momentum_window_minutes: 5
+  volume_ma_periods: 20
+
+risk:
+  max_position_pct: 5.0
+  max_open_positions: 3
+  daily_loss_limit_pct: 2.0
+  cooldown_minutes: 30
+  default_product: DELIVERY  # DELIVERY | INTRADAY
+
+portfolio:
+  initial_capital_inr: 1000000
+
+monitoring:
+  health_port: 8080
+  metrics_port: 9090

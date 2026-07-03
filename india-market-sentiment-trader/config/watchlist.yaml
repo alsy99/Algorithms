@@ -1,0 +1,25 @@
+symbols:
+  - symbol: RELIANCE
+    angel_tradingsymbol: RELIANCE-EQ
+    aliases: ["Reliance", "RIL", "Ambani", "Reliance Industries"]
+  - symbol: TCS
+    angel_tradingsymbol: TCS-EQ
+    aliases: ["Tata Consultancy", "Tata Consultancy Services"]
+  - symbol: HDFCBANK
+    angel_tradingsymbol: HDFCBANK-EQ
+    aliases: ["HDFC Bank", "HDFC"]
+  - symbol: INFY
+    angel_tradingsymbol: INFY-EQ
+    aliases: ["Infosys", "Infy"]
+  - symbol: SBIN
+    angel_tradingsymbol: SBIN-EQ
+    aliases: ["SBI", "State Bank of India", "State Bank"]
+  - symbol: ITC
+    angel_tradingsymbol: ITC-EQ
+    aliases: ["ITC Limited"]
+  - symbol: BHARTIARTL
+    angel_tradingsymbol: BHARTIARTL-EQ
+    aliases: ["Airtel", "Bharti Airtel"]
+  - symbol: NIFTYBEES
+    angel_tradingsymbol: NIFTYBEES-EQ
+    aliases: ["Nifty ETF", "Nifty Bees"]
